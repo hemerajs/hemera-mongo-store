@@ -1,6 +1,9 @@
 language: node_js
 sudo: true
 
+services:
+  - mongodb
+
 node_js:
   - "9"
   - "8"
@@ -22,7 +25,7 @@ addons:
       - gcc-4.8
 
 before_script:
-  - sleep 10
+  - sleep 15
   # install nats
   - wget https://github.com/nats-io/gnatsd/releases/download/v1.0.2/gnatsd-v1.0.2-linux-amd64.zip -qO tmp.zip
   - unzip tmp.zip
