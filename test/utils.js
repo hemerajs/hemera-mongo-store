@@ -49,7 +49,9 @@ function initServer(topic, testCollection, pluginOptions, cb) {
     })
     hemera.use(HemeraJoi)
     hemera.use(HemeraMongoStore, pluginOptions)
-    hemera.ready(() => {
+    hemera.ready((err) => {
+      console.log(err)
+      console.log(hemera.mongodb)
       const plugin = {
         mongodb: hemera.mongodb.client,
         db: hemera.mongodb.db
