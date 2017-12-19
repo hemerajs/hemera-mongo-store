@@ -13,7 +13,7 @@ describe('Hemera-mongo-store with response serialization', function() {
   const options = {
     serializeResult: true,
     mongo: {
-      url: 'mongodb://localhost:27017/test'
+      url: 'mongodb://localhost:27017'
     }
   }
   let server

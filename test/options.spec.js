@@ -9,7 +9,7 @@ describe('Hemera-mongo-store options', function() {
   const testCollection = 'test'
   const options = {
     mongo: {
-      url: 'mongodb://localhost:27017/test'
+      url: 'mongodb://localhost:27017'
     },
     store: {
       create: { serializeFunctions: true }, // MF: Dunno how to test this one

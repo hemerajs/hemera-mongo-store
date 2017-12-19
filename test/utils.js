@@ -18,14 +18,16 @@ function createExtendedData(mongodb, date) {
 }
 
 function testExtendedData(plugin, testCollection, id, done) {
-  plugin.db.collection(testCollection).findOne({
-    _id: new plugin.mongodb.ObjectID(id)
-  },
-  (err, doc) => {
-    expect(err).to.be.null()
-    testExtendedDoc(plugin, doc)
-    done()
-  })
+  plugin.db.collection(testCollection).findOne(
+    {
+      _id: new plugin.mongodb.ObjectID(id)
+    },
+    (err, doc) => {
+      expect(err).to.be.null()
+      testExtendedDoc(plugin, doc)
+      done()
+    }
+  )
 }
 
 function testExtendedDoc(plugin, doc) {
@@ -39,19 +41,22 @@ function testExtendedDoc(plugin, doc) {
 
 function initServer(topic, testCollection, pluginOptions, cb) {
   let PORT = 6242
-  var flags = ['--user', 'derek', '--pass', 'foobar']
-  var authUrl = 'nats://derek:foobar@localhost:' + PORT
+  var authUrl = 'nats://localhost:' + PORT
 
-  const server = HemeraTestsuite.start_server(PORT, flags, () => {
+  const server = HemeraTestsuite.start_server(PORT, null, err => {
+    if (err) {
+      return cb(err)
+    }
     const nats = Nats.connect(authUrl)
     const hemera = new Hemera(nats, {
-      logLevel: 'error'
+      logLevel: 'silent'
     })
     hemera.use(HemeraJoi)
     hemera.use(HemeraMongoStore, pluginOptions)
-    hemera.ready((err) => {
-      console.log(err)
-      console.log(hemera.mongodb)
+    hemera.ready(err => {
+      if (err) {
+        return cb(err)
+      }
       const plugin = {
         mongodb: hemera.mongodb.client,
         db: hemera.mongodb.db
@@ -62,7 +67,7 @@ function initServer(topic, testCollection, pluginOptions, cb) {
           cmd: 'dropCollection',
           collection: testCollection
         },
-        function(err, resp) {
+        (err, resp) => {
           cb(null, { server, hemera, plugin })
         }
       )

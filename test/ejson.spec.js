@@ -12,7 +12,7 @@ describe('Hemera-mongo-store with EJSON', function() {
   const testCollection = 'test'
   const options = {
     mongo: {
-      url: 'mongodb://localhost:27017/test'
+      url: 'mongodb://localhost:27017'
     }
   }
   let server

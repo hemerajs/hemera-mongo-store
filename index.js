@@ -50,7 +50,7 @@ function hemeraMongoStore(hemera, opts, done) {
         topic,
         cmd: 'dropCollection'
       },
-      function(req, cb) {
+      function(req) {
         const collection = db.collection(req.collection)
         return collection.drop()
       }
