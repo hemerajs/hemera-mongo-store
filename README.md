@@ -46,7 +46,7 @@ You can find a full example [here](https://github.com/hemerajs/hemera/blob/maste
 See [Store](https://github.com/hemerajs/hemera/tree/master/packages/hemera-store) Interface.
 
 ## Extended JSON
-Because the underlying NATs transport is simply passing JSON stringified messages between actions, certain native (or extended) MongoDB types will be lost. For example, sending the following action will result in the `date` and `objectId` fields being saved as strings, not as their corresponding `Date` and `ObjectId` types.
+Because the underlying NATS transport is simply passing JSON stringified messages between actions, certain native (or extended) MongoDB types will be lost. For example, sending the following action will result in the `date` and `objectId` fields being saved as strings, not as their corresponding `Date` and `ObjectId` types.
 ```js
 hemera.ready(() => {
   const ObjectID = hemera.mongodb.client.ObjectID
