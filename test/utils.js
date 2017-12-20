@@ -43,7 +43,7 @@ function initServer(topic, testCollection, pluginOptions, cb) {
   let PORT = 6242
   var authUrl = 'nats://localhost:' + PORT
 
-  const server = HemeraTestsuite.start_server(PORT, null, err => {
+  const server = HemeraTestsuite.start_server(PORT, err => {
     if (err) {
       return cb(err)
     }
@@ -74,6 +74,7 @@ function initServer(topic, testCollection, pluginOptions, cb) {
             collection: testCollection
           })
         })
+        .catch(err => cb(err))
         .then(() => cb(null, { server, hemera, plugin }))
     })
   })
