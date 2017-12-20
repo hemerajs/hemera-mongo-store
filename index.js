@@ -51,8 +51,14 @@ function hemeraMongoStore(hemera, opts, done) {
         cmd: 'dropCollection'
       },
       function(req) {
-        const collection = db.collection(req.collection)
-        return collection.drop()
+        return db
+          .listCollections({ name: req.collection })
+          .next()
+          .then(resp => {
+            if (resp) {
+              return db.collection(req.collection).drop()
+            }
+          })
       }
     )
 
@@ -62,7 +68,14 @@ function hemeraMongoStore(hemera, opts, done) {
         cmd: 'createCollection'
       },
       function(req) {
-        return db.createCollection(req.collection, req.options)
+        return db
+          .listCollections({ name: req.collection })
+          .next()
+          .then(resp => {
+            if (!resp) {
+              return db.createCollection(req.collection, req.options)
+            }
+          })
       }
     )
 
