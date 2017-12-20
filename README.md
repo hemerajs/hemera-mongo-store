@@ -37,7 +37,7 @@ npm run test
 ## Access multiple databases
 
 If you decide to use multiple MongoDB databases for your services you can use the `useDbAsTopicSuffix` option.
-The database name e.g `test` is appended to the topic name `mongo-store.test`. This ensures that your database is accessible from a seperate hemera service. 
+The database name e.g `test` is appended to the topic `topic:"mongo-store.test"`. This ensures that your database is able to run under a different hemera service. 
 
 You can find a full example [here](https://github.com/hemerajs/hemera/blob/master/examples/databases/mongo-store-suffix.js)
 
