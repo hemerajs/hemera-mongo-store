@@ -169,7 +169,7 @@ Fine-tuning of the calls to the MongoDB Node.js driver can be performed via `opt
 
 ### Example:
 
-```
+```js
 hemera.use(hemeraMongo, {
   mongo: { url: 'mongodb://localhost:27017/test' },
   store: {
