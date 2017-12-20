@@ -1,5 +1,7 @@
 'use strict'
 
+process.on('unhandledRejection', up => { throw up })
+
 const Hemera = require('nats-hemera')
 const HemeraMongoStore = require('./../index')
 const HemeraJoi = require('hemera-joi')
