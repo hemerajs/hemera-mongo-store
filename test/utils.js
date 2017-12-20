@@ -61,16 +61,20 @@ function initServer(topic, testCollection, pluginOptions, cb) {
         mongodb: hemera.mongodb.client,
         db: hemera.mongodb.db
       }
-      hemera.act(
-        {
+      hemera
+        .act({
           topic,
           cmd: 'dropCollection',
           collection: testCollection
-        },
-        (err, resp) => {
-          cb(null, { server, hemera, plugin })
-        }
-      )
+        })
+        .then(() => {
+          return hemera.act({
+            topic,
+            cmd: 'createCollection',
+            collection: testCollection
+          })
+        })
+        .then(() => cb(null, { server, hemera, plugin }))
     })
   })
 }

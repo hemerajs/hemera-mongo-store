@@ -56,6 +56,16 @@ function hemeraMongoStore(hemera, opts, done) {
       }
     )
 
+    hemera.add(
+      {
+        topic,
+        cmd: 'createCollection'
+      },
+      function(req) {
+        return db.createCollection(req.collection, req.options)
+      }
+    )
+
     hemera.add(StorePattern.create(topic), function(req) {
       const collection = db.collection(req.collection)
       const store = new MongoStore(collection, opts)

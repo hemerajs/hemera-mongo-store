@@ -166,7 +166,6 @@ describe('Hemera-mongo-store options', function() {
           function(err, resp) {
             expect(err).to.not.exist()
             expect(resp).to.be.an.object()
-            console.log(resp)
             done()
           }
         )

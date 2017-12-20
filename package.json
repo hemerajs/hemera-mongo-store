@@ -32,7 +32,7 @@
     "mongodb-extended-json": "^1.10.0"
   },
   "devDependencies": {
-    "code": "^5.1.2",
+    "code": "^3.0.2",
     "eslint": "^4.9.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^10.2.1",
