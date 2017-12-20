@@ -49,7 +49,7 @@ function initServer(topic, testCollection, pluginOptions, cb) {
     }
     const nats = Nats.connect(authUrl)
     const hemera = new Hemera(nats, {
-      logLevel: 'silent'
+      logLevel: 'warn'
     })
     hemera.use(HemeraJoi)
     hemera.use(HemeraMongoStore, pluginOptions)
