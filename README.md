@@ -34,6 +34,9 @@ hemera.use(require('hemera-mongo-store'), {
 npm run test
 ```
 
+## Dependencies
+- hemera-joi
+
 ## Access multiple databases
 
 If you decide to use multiple MongoDB databases for your services you can use the `useDbAsTopicSuffix` option.
