@@ -174,7 +174,16 @@ function hemeraMongoStore(hemera, opts, done) {
       store.ObjectID = ObjectID
       req.query = deserialize(req.query)
 
-      return store.count(req, req.options).then(preResponseHandler)
+      return store.count(req, req.options)
+    })
+
+    hemera.add(StorePattern.exists(topic), function(req) {
+      const collection = db.collection(req.collection)
+      const store = new MongoStore(collection, opts)
+      store.ObjectID = ObjectID
+      req.query = deserialize(req.query)
+
+      return store.exists(req, req.options)
     })
 
     hemera.log.debug('DB connected!')

@@ -273,6 +273,23 @@ class MongoStore extends Store {
 
     return this._driver.count(req.query)
   }
+
+  /**
+   *
+   *
+   * @param {any} req
+   *
+   * @memberOf MongoStore
+   */
+  exists(req) {
+    if (this.options.store.exists) {
+      return this._driver
+        .findOne(req.query, this.options.store.exists)
+        .then(resp => !!resp)
+    }
+
+    return this._driver.findOne(req.query).then(resp => !!resp)
+  }
 }
 
 module.exports = MongoStore

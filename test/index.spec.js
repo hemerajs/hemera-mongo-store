@@ -417,4 +417,20 @@ describe('Hemera-mongo-store', function() {
       }
     )
   })
+
+  it('exists', function(done) {
+    hemera.act(
+      {
+        topic,
+        cmd: 'exists',
+        collection: testCollection,
+        query: {}
+      },
+      function(err, resp) {
+        expect(err).to.be.not.exists()
+        expect(resp).to.be.a.boolean()
+        done()
+      }
+    )
+  })
 })
