@@ -1,4 +1,4 @@
-# Hemera-mongo-store package
+# :guardsman: Hemera-mongo-store package
 
 [![Build Status](https://travis-ci.org/hemerajs/hemera-mongo-store.svg?branch=master)](https://travis-ci.org/hemerajs/hemera-mongo-store)
 [![npm](https://img.shields.io/npm/v/hemera-mongo-store.svg?maxAge=3600)](https://www.npmjs.com/package/hemera-mongo-store)
@@ -33,6 +33,9 @@ hemera.use(require('hemera-mongo-store'), {
 ```
 npm run test
 ```
+
+## Dependencies
+- hemera-joi
 
 ## Access multiple databases
 
