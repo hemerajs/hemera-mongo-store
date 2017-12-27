@@ -191,18 +191,19 @@ function hemeraMongoStore(hemera, opts, done) {
   })
 }
 
-const plugin = Hp(hemeraMongoStore, '>=3.0.0')
-plugin[Symbol.for('name')] = require('./package.json').name
-plugin[Symbol.for('options')] = {
-  payloadValidator: 'hemera-joi',
-  mongos: {},
-  serializeResult: false,
-  mongo: {
-    url: 'mongodb://localhost:27017/'
-  },
-  store: {
-    replace: { upsert: true }
+module.exports = Hp(hemeraMongoStore, {
+  hemera: '>=3',
+  name: require('./package.json').name,
+  dependencies: ['hemera-joi'],
+  options: {
+    payloadValidator: 'hemera-joi',
+    mongos: {},
+    serializeResult: false,
+    mongo: {
+      url: 'mongodb://localhost:27017/'
+    },
+    store: {
+      replace: { upsert: true }
+    }
   }
-}
-plugin[Symbol.for('dependencies')] = ['hemera-joi']
-module.exports = plugin
+})
