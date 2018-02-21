@@ -88,17 +88,23 @@ class MongoStore extends Store {
    * @memberOf MongoStore
    */
   removeById(req) {
+    var id
+    try {
+      id = this.ObjectID(req.id)
+    } catch(err) {
+      id = req.id
+    }
     if (this.options.store.removeById) {
       return this._driver.findOneAndDelete(
         {
-          _id: this.ObjectID(req.id)
+          _id: id
         },
         this.options.store.removeById
       )
     }
 
     return this._driver.findOneAndDelete({
-      _id: this.ObjectID(req.id)
+      _id: id
     })
   }
 
@@ -131,10 +137,15 @@ class MongoStore extends Store {
    * @memberOf MongoStore
    */
   updateById(req, data) {
+    try {
+      id = this.ObjectID(req.id)
+    } catch(err) {
+      id = req.id
+    }    
     if (this.options.store.updateById) {
       return this._driver.findOneAndUpdate(
         {
-          _id: this.ObjectID(req.id)
+          _id: id
         },
         data,
         this.options.store.updateById
@@ -143,7 +154,7 @@ class MongoStore extends Store {
 
     return this._driver.findOneAndUpdate(
       {
-        _id: this.ObjectID(req.id)
+        _id: id
       },
       data
     )
@@ -193,17 +204,22 @@ class MongoStore extends Store {
    * @memberOf MongoStore
    */
   findById(req) {
+    try {
+      id = this.ObjectID(req.id)
+    } catch(err) {
+      id = req.id
+    }    
     if (this.options.store.findById) {
       return this._driver.findOne(
         {
-          _id: this.ObjectID(req.id)
+          _id: id
         },
         this.options.store.findById
       )
     }
 
     return this._driver.findOne({
-      _id: this.ObjectID(req.id)
+      _id: id
     })
   }
 
@@ -241,10 +257,15 @@ class MongoStore extends Store {
    * @memberof MongoStore
    */
   replaceById(req, data) {
+    try {
+      id = this.ObjectID(req.id)
+    } catch(err) {
+      id = req.id
+    }    
     if (this.options.store.replaceById) {
       return this._driver.findOneAndReplace(
         {
-          _id: this.ObjectID(req.id)
+          _id: id
         },
         data,
         this.options.store.replaceById
@@ -253,7 +274,7 @@ class MongoStore extends Store {
 
     return this._driver.findOneAndReplace(
       {
-        _id: this.ObjectID(req.id)
+        _id: id
       },
       data
     )
