@@ -137,6 +137,7 @@ class MongoStore extends Store {
    * @memberOf MongoStore
    */
   updateById(req, data) {
+    var id
     try {
       id = this.ObjectID(req.id)
     } catch(err) {
@@ -204,6 +205,7 @@ class MongoStore extends Store {
    * @memberOf MongoStore
    */
   findById(req) {
+    var id
     try {
       id = this.ObjectID(req.id)
     } catch(err) {
@@ -257,6 +259,7 @@ class MongoStore extends Store {
    * @memberof MongoStore
    */
   replaceById(req, data) {
+    var id
     try {
       id = this.ObjectID(req.id)
     } catch(err) {
