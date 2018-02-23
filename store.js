@@ -4,7 +4,7 @@ const Store = require('hemera-store')
 
 var idRegex = /^[a-f\d]{24}$/i
 
-getId = function (ObjectID,id) {
+var getId = function (ObjectID,id) {
   if (idRegex.test(id)) return ObjectID(id)
   return id
 }
