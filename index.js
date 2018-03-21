@@ -192,11 +192,10 @@ function hemeraMongoStore(hemera, opts, done) {
 }
 
 module.exports = Hp(hemeraMongoStore, {
-  hemera: '^4.0.0',
+  hemera: '>=5.0.0-rc.1',
   name: require('./package.json').name,
   dependencies: ['hemera-joi'],
   options: {
-    payloadValidator: 'hemera-joi',
     mongos: {},
     serializeResult: false,
     mongo: {
