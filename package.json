@@ -26,9 +26,9 @@
   "author": "Dustin Deus (https://github.com/StarpTech)",
   "license": "MIT",
   "dependencies": {
-    "hemera-joi": "5.0.x",
-    "hemera-plugin": "1.1.x",
-    "hemera-store": "^1.1.x",
+    "hemera-joi": "^5.0.0",
+    "hemera-plugin": "^1.1.x",
+    "hemera-store": "^1.1.18",
     "mongodb": "2.2.x",
     "mongodb-extended-json": "1.10.x"
   },
