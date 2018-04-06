@@ -1,6 +1,6 @@
 {
   "name": "hemera-mongo-store",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "This is a plugin to use Mongodb with Hemera",
   "main": "index.js",
   "repository": {
