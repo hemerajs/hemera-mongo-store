@@ -45,145 +45,119 @@ function hemeraMongoStore(hemera, opts, done) {
       db.close(done)
     })
 
-    hemera.add(
-      {
-        topic,
-        cmd: 'dropCollection'
-      },
-      function(req) {
-        return db
-          .listCollections({ name: req.collection })
-          .next()
-          .then(resp => {
-            if (resp) {
-              return db.collection(req.collection).drop()
-            }
-          })
-      }
-    )
+    // encapsulate payload validator only to this plugin
+    hemera.use(require('hemera-joi')).after((err, done) => {
+      hemera.add(
+        {
+          topic,
+          cmd: 'dropCollection'
+        },
+        req => db.collection(req.collection).drop()
+      )
+      hemera.add(
+        {
+          topic,
+          cmd: 'createCollection'
+        },
+        req => db.createCollection(req.collection, req.options)
+      )
+      hemera.add(StorePattern.create(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.data = deserialize(req.data)
 
-    hemera.add(
-      {
-        topic,
-        cmd: 'createCollection'
-      },
-      function(req) {
-        return db
-          .listCollections({ name: req.collection })
-          .next()
-          .then(resp => {
-            if (!resp) {
-              return db.createCollection(req.collection, req.options)
-            }
-          })
-      }
-    )
+        return store.create(req)
+      })
+      hemera.add(StorePattern.update(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.query = deserialize(req.query)
 
-    hemera.add(StorePattern.create(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.data = deserialize(req.data)
+        return store
+          .update(req, deserialize(req.data))
+          .then(resp => resp.value)
+          .then(preResponseHandler)
+      })
+      hemera.add(StorePattern.updateById(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
 
-      return store.create(req)
-    })
+        return store
+          .updateById(req, deserialize(req.data))
+          .then(resp => resp.value)
+          .then(preResponseHandler)
+      })
+      hemera.add(StorePattern.remove(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.query = deserialize(req.query)
 
-    hemera.add(StorePattern.update(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.query = deserialize(req.query)
+        return store.remove(req)
+      })
+      hemera.add(StorePattern.removeById(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
 
-      return store
-        .update(req, deserialize(req.data))
-        .then(resp => resp.value)
-        .then(preResponseHandler)
-    })
+        return store
+          .removeById(req)
+          .then(resp => resp.value)
+          .then(preResponseHandler)
+      })
+      hemera.add(StorePattern.replace(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.query = deserialize(req.query)
 
-    hemera.add(StorePattern.updateById(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
+        return store.replace(req, deserialize(req.data))
+      })
+      hemera.add(StorePattern.replaceById(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
 
-      return store
-        .updateById(req, deserialize(req.data))
-        .then(resp => resp.value)
-        .then(preResponseHandler)
-    })
+        return store
+          .replaceById(req, deserialize(req.data))
+          .then(resp => resp.value)
+          .then(preResponseHandler)
+      })
+      hemera.add(StorePattern.findById(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
 
-    hemera.add(StorePattern.remove(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.query = deserialize(req.query)
+        return store.findById(req).then(preResponseHandler)
+      })
+      hemera.add(StorePattern.find(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.query = deserialize(req.query)
 
-      return store.remove(req)
-    })
+        return store.find(req, req.options).then(preResponseHandler)
+      })
+      hemera.add(StorePattern.count(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.query = deserialize(req.query)
 
-    hemera.add(StorePattern.removeById(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
+        return store.count(req, req.options)
+      })
+      hemera.add(StorePattern.exists(topic), function(req) {
+        const collection = db.collection(req.collection)
+        const store = new MongoStore(collection, opts)
+        store.ObjectID = ObjectID
+        req.query = deserialize(req.query)
 
-      return store
-        .removeById(req)
-        .then(resp => resp.value)
-        .then(preResponseHandler)
-    })
-
-    hemera.add(StorePattern.replace(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.query = deserialize(req.query)
-
-      return store.replace(req, deserialize(req.data))
-    })
-
-    hemera.add(StorePattern.replaceById(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-
-      return store
-        .replaceById(req, deserialize(req.data))
-        .then(resp => resp.value)
-        .then(preResponseHandler)
-    })
-
-    hemera.add(StorePattern.findById(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-
-      return store.findById(req).then(preResponseHandler)
-    })
-
-    hemera.add(StorePattern.find(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.query = deserialize(req.query)
-
-      return store.find(req, req.options).then(preResponseHandler)
-    })
-
-    hemera.add(StorePattern.count(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.query = deserialize(req.query)
-
-      return store.count(req, req.options)
-    })
-
-    hemera.add(StorePattern.exists(topic), function(req) {
-      const collection = db.collection(req.collection)
-      const store = new MongoStore(collection, opts)
-      store.ObjectID = ObjectID
-      req.query = deserialize(req.query)
-
-      return store.exists(req, req.options)
+        return store.exists(req, req.options)
+      })
+      done(err)
     })
 
     hemera.log.debug('DB connected!')
@@ -192,9 +166,8 @@ function hemeraMongoStore(hemera, opts, done) {
 }
 
 module.exports = Hp(hemeraMongoStore, {
-  hemera: '>=5.0.0-rc.1',
+  hemera: '>=5.0.0',
   name: require('./package.json').name,
-  dependencies: ['hemera-joi'],
   options: {
     mongos: {},
     serializeResult: false,
