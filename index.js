@@ -47,19 +47,30 @@ function hemeraMongoStore(hemera, opts, done) {
 
     // encapsulate payload validator only to this plugin
     hemera.use(require('hemera-joi')).after((err, done) => {
+      const Joi = hemera.joi
       hemera.add(
         {
           topic,
-          cmd: 'dropCollection'
+          cmd: 'dropCollection',
+          collection: Joi.string().required()
         },
-        req => db.collection(req.collection).drop()
+        req =>
+          db
+            .collection(req.collection)
+            .drop()
+            .catch(() => false)
       )
       hemera.add(
         {
           topic,
-          cmd: 'createCollection'
+          cmd: 'createCollection',
+          collection: Joi.string().required()
         },
-        req => db.createCollection(req.collection, req.options)
+        req =>
+          db
+            .createCollection(req.collection, req.options)
+            .then(() => true)
+            .catch(() => false)
       )
       hemera.add(StorePattern.create(topic), function(req) {
         const collection = db.collection(req.collection)
