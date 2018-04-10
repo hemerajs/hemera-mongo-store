@@ -53,6 +53,7 @@ function initServer(topic, testCollection, pluginOptions, cb) {
     const hemera = new Hemera(nats, {
       logLevel: 'warn'
     })
+    hemera.use(HemeraJoi)
     hemera.use(HemeraMongoStore, pluginOptions)
     hemera.ready(err => {
       if (err) {

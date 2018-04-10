@@ -21,6 +21,8 @@ docker run -d -p 27017:27017 -p 28017:28017 -e AUTH=no tutum/mongodb
 ## Example
 
 ```js
+const hemera = new Hemera(nats)
+hemera.use(require('hemera-joi'))
 hemera.use(require('hemera-mongo-store'), {
   mongo: {
     url: 'mongodb://localhost:27017/test'
