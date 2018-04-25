@@ -2,6 +2,13 @@
 
 const Store = require('hemera-store')
 
+var idRegex = /^[a-f\d]{24}$/i
+
+var getId = function (ObjectID,id) {
+  if (idRegex.test(id)) return ObjectID(id)
+  return id
+}
+
 /**
  *
  *
@@ -91,14 +98,14 @@ class MongoStore extends Store {
     if (this.options.store.removeById) {
       return this._driver.findOneAndDelete(
         {
-          _id: this.ObjectID(req.id)
+          _id: getId(this.ObjectID,req.id)
         },
         this.options.store.removeById
       )
     }
 
     return this._driver.findOneAndDelete({
-      _id: this.ObjectID(req.id)
+      _id: getId(this.ObjectID,req.id)
     })
   }
 
@@ -134,7 +141,7 @@ class MongoStore extends Store {
     if (this.options.store.updateById) {
       return this._driver.findOneAndUpdate(
         {
-          _id: this.ObjectID(req.id)
+          _id: getId(this.ObjectID,req.id)
         },
         data,
         this.options.store.updateById
@@ -143,7 +150,7 @@ class MongoStore extends Store {
 
     return this._driver.findOneAndUpdate(
       {
-        _id: this.ObjectID(req.id)
+        _id: getId(this.ObjectID,req.id)
       },
       data
     )
@@ -196,14 +203,14 @@ class MongoStore extends Store {
     if (this.options.store.findById) {
       return this._driver.findOne(
         {
-          _id: this.ObjectID(req.id)
+          _id: getId(this.ObjectID,req.id)
         },
         this.options.store.findById
       )
     }
 
     return this._driver.findOne({
-      _id: this.ObjectID(req.id)
+      _id: getId(this.ObjectID,req.id)
     })
   }
 
@@ -244,7 +251,7 @@ class MongoStore extends Store {
     if (this.options.store.replaceById) {
       return this._driver.findOneAndReplace(
         {
-          _id: this.ObjectID(req.id)
+          _id: getId(this.ObjectID,req.id)
         },
         data,
         this.options.store.replaceById
@@ -253,7 +260,7 @@ class MongoStore extends Store {
 
     return this._driver.findOneAndReplace(
       {
-        _id: this.ObjectID(req.id)
+        _id: getId(this.ObjectID,req.id)
       },
       data
     )
